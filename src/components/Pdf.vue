@@ -1,6 +1,6 @@
 <script setup>
 import { usePDF } from "vue3-pdfmake";
-import { useTimesStore } from "../stores/times";
+import { useTimesStore } from "@/stores/times";
 const props = defineProps({
   weeks: Array,
   group: String,

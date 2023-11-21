@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
-import { GROUPS_URL, LECTURERS_URL, AUDITORIUMS_URL } from "../constants";
+import { GROUPS_URL, LECTURERS_URL, AUDITORIUMS_URL } from "@/constants";
 const inputSearch = ref([]);
 
 async function getData(val) {

@@ -1,9 +1,9 @@
 <script setup>
-import MainFrame from "../components/MainFrame.vue";
-import Spinner from "../components/Spinner.vue";
-import Header from "../components/Header.vue";
+import MainFrame from "@/components/MainFrame.vue";
+import Spinner from "@/components/Spinner.vue";
+import Header from "@/components/Header.vue";
 import axios from "axios";
-import dataRefactoring from "../utils/dataRefactoring";
+import dataRefactoring from "@/utils/dataRefactoring";
 import { useRoute } from "vue-router";
 import { ref, onBeforeMount } from "vue";
 

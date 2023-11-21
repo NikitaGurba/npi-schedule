@@ -1,6 +1,6 @@
 <script setup>
 import DayRow from "./DayRow.vue";
-import { WEEK_DAYS } from "../constants";
+import { WEEK_DAYS } from "@/constants";
 import { ref, onMounted, onUpdated } from "vue";
 
 const props = defineProps({

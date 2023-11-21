@@ -1,5 +1,5 @@
 <script setup>
-import Grade from "../components/Grade.vue";
+import Grade from "@/components/Grade.vue";
 const props = defineProps({
   data: Object,
 });

@@ -1,6 +1,6 @@
 <script setup>
-import currentClass from "../utils/currentClass";
-import { useTimesStore } from "../stores/times";
+import currentClass from "@/utils/currentClass";
+import { useTimesStore } from "@/stores/times";
 
 const timeSlotsStore = useTimesStore();
 

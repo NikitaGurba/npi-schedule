@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { CURRENT_WEEK_URL } from "../constants";
+import { CURRENT_WEEK_URL } from "@/constants";
 
 export const useCurrentWeekNumberStore = defineStore("currentWeekNumber", {
   state: () => ({

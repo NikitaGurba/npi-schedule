@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import emojis from "../utils/emojis";
+import emojis from "@/utils/emojis";
 let emoji = ref("😭");
 
 function emojiRandom() {

@@ -1,7 +1,7 @@
 <script setup>
-import SearchView from "../components/SearchFrame.vue";
-import Spinner from "../components/Spinner.vue";
-import Header from "../components/Header.vue";
+import SearchView from "@/components/SearchFrame.vue";
+import Spinner from "@/components/Spinner.vue";
+import Header from "@/components/Header.vue";
 </script>
 
 <template>

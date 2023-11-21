@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { CLASS_TYPES_URL } from "../constants";
+import { CLASS_TYPES_URL } from "@/constants";
 
 export const useColorsStore = defineStore("colors", {
   state: () => ({

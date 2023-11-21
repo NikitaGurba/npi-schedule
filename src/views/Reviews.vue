@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
-import Review from "../components/Review.vue";
+import Review from "@/components/Review.vue";
 import { io } from "socket.io-client";
 const data = ref(null);
 

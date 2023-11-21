@@ -1,5 +1,5 @@
 <script setup>
-import currentClass from "../utils/currentClass";
+import currentClass from "@/utils/currentClass";
 import CustomIcon from "./CustomIcon.vue";
 import { computed, ref } from "vue";
 

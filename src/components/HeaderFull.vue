@@ -2,8 +2,8 @@
 import {
   TITLE_FULL,
   TITLE_SMALL,
-} from "../constants";
-import { useCurrentWeekNumberStore } from "../stores/weekNumber";
+} from "@/constants";
+import { useCurrentWeekNumberStore } from "@/stores/weekNumber";
 const currentWeekNumberStore = useCurrentWeekNumberStore();
 await currentWeekNumberStore.getCurrentWeekNumber();
 const currentWeek = currentWeekNumberStore.currentWeekNumber;

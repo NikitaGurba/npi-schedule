@@ -3,7 +3,7 @@
 import axios from "axios";
 import HeaderFull from "./HeaderFull.vue";
 import { defineAsyncComponent } from "vue";
-import { INF_LINES_URL, LAST_UPDATED_URL } from "../constants";
+import { INF_LINES_URL, LAST_UPDATED_URL } from "@/constants";
 
 const Search = defineAsyncComponent(() => import("./Search.vue"));
 const Table = defineAsyncComponent(() => import("./Table.vue"));

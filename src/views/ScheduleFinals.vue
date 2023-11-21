@@ -1,11 +1,11 @@
 <script setup>
-import MainFrame from "../components/MainFrame.vue";
-import Spinner from "../components/Spinner.vue";
-import Header from "../components/Header.vue";
+import MainFrame from "@/components/MainFrame.vue";
+import Spinner from "@/components/Spinner.vue";
+import Header from "@/components/Header.vue";
 import axios from "axios";
 import { ref, onBeforeMount } from "vue";
-import finalsDataRefactoring from "../utils/finalsDataRefactoring";
-import { useTimesStore } from "../stores/times";
+import finalsDataRefactoring from "@/utils/finalsDataRefactoring";
+import { useTimesStore } from "@/stores/times";
 import { useRoute } from "vue-router";
 
 const props = defineProps({

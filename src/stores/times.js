@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { TIME_SLOTS_URL } from "../constants";
+import { TIME_SLOTS_URL } from "@/constants";
 
 export const useTimesStore = defineStore("times", {
   state: () => ({

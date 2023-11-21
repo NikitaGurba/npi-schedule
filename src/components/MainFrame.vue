@@ -3,10 +3,10 @@ import { ref, computed, onMounted, onUpdated } from "vue";
 import DayCard from "./DayCard.vue";
 import Pdf from "./Pdf.vue";
 import { useRouter } from "vue-router";
-import { useTimesStore } from "../stores/times";
-import { useCurrentWeekNumberStore } from "../stores/weekNumber";
-import { useColorsStore } from "../stores/colors";
-import { COLOR_DESIGN, MONTHS } from "../constants";
+import { useTimesStore } from "@/stores/times";
+import { useCurrentWeekNumberStore } from "@/stores/weekNumber";
+import { useColorsStore } from "@/stores/colors";
+import { COLOR_DESIGN, MONTHS } from "@/constants";
 
 const props = defineProps({
   groupName: String,

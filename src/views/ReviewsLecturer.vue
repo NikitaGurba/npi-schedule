@@ -1,11 +1,11 @@
 <script setup>
 import { ref, onMounted, onBeforeMount } from "vue";
-import Review from "../components/Review.vue";
-import Grade from "../components/Grade.vue";
-import Header from "../components/Header.vue";
+import Review from "@/components/Review.vue";
+import Grade from "@/components/Grade.vue";
+import Header from "@/components/Header.vue";
 import { useRoute, useRouter } from "vue-router";
 import { io } from "socket.io-client";
-import { LECTURERS_URL } from "../constants";
+import { LECTURERS_URL } from "@/constants";
 import axios from "axios";
 
 let loaded = ref(false);
