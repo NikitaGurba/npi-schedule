@@ -3,7 +3,6 @@ import currentClass from "@/utils/currentClass";
 import CustomIcon from "./CustomIcon.vue";
 import { computed, ref } from "vue";
 
-//пути через @
 const props = defineProps({
   data: Object,
   times: Object,
@@ -38,7 +37,7 @@ function hrefForAuditorium(name) {
   return "/auditoriums/" + name + "/schedule";
 }
 
-const { type, firstRow, secondRow, thirdRow } = props.data; //деструктуризация, теряется реактивность
+const { type, firstRow, secondRow, thirdRow } = props.data;
 const classNum = props.data.class;
 let todaysDayOfWeek = new Date().getDay();
 todaysDayOfWeek = todaysDayOfWeek === 0 ? 7 : todaysDayOfWeek;

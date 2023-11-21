@@ -21,9 +21,9 @@ onBeforeMount(async () => {
 
 let rawData;
 const socket = io(process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL);
-console.log('dsa')
 const route = useRoute();
 const router = useRouter();
+const maxInputLength = 250;
 const lecturer = route.params.lecturer;
 const data = ref(null);
 const grade = ref(null);
@@ -76,6 +76,7 @@ onMounted(() => {
     router.go(-1);
   };
 });
+const dataExists = data.value !== null && data.value.length === 0;
 </script>
 <template>
   <div class="frame">
@@ -98,9 +99,9 @@ onMounted(() => {
             placeholder="Напишите отзыв"
             v-model="formText"
             class="input-cont__text-input"
-            maxlength="250"
+            :maxlength="maxInputLength"
           ></textarea>
-          <div class="input-cont__text-count">{{ formText.length }}/250</div>
+          <div class="input-cont__text-count">{{ formText.length + "/" + maxInputLength }}</div>
         </div>
         <button ref="submitButton" class="form__submit-button">
           Отправить
@@ -108,11 +109,11 @@ onMounted(() => {
       </form>
     </div>
     <div class="reviews-cont">
-      <div v-if="data && data.length === 0" class="no-reviews">
+      <div v-if="dataExists" class="no-reviews">
         Отзывов пока нет
       </div>
       <Review v-for="review in data" :data="review" />
-    </div>
+    </div>  
   </div>
 </template>
 

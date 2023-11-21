@@ -4,13 +4,16 @@ import Review from "@/components/Review.vue";
 import { io } from "socket.io-client";
 const data = ref(null);
 
-const socket = io(process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL);
+const socket = io(
+  process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL,
+);
 socket.on("connect", () => {
   socket.emit("getData");
   socket.on("takeData", (comments) => {
     data.value = comments;
   });
 });
+const dataExists = data.value !== null && data.value.length === 0;
 </script>
 
 <template>
@@ -24,9 +27,7 @@ socket.on("connect", () => {
       <header class="page-title__header">Недавние отзывы</header>
     </div>
     <div class="reviews-cont">
-      <div v-if="data && data.length === 0" class="no-reviews">
-        Отзывов пока нет
-      </div>
+      <div v-if="dataExists" class="no-reviews">Отзывов пока нет</div>
       <Review v-for="review in data" :data="review" />
     </div>
   </div>
