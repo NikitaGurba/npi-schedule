@@ -38,8 +38,8 @@ const lastUpdatedText = lastUpdated.split("-").reverse().join(".");
   <div class="footer">
     <font-awesome-icon class="footer__info-icon fa-2x" icon="circle-info" />
     <div class="footer__info-text">
-      <span>Нашли баг? Возник вопрос? </span
-      ><a href="https://vk.com/redmaunn">Пишите мне</a>
+      <span>Нашли баг? Возник вопрос? </span>
+      <a href="https://vk.com/redmaunn">Пишите мне</a>
       <a class="linkToGit" href="https://github.com/RedMaun/npi-schedule">
         Исходный код
       </a>

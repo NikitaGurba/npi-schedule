@@ -13,9 +13,7 @@ const date = new Date(props.data.date).toLocaleDateString('ru-RU')
       <a v-if="lecturer" :href="`/reviews/${lecturer}`" class="head__lecturer">
         {{ lecturer }}
       </a>
-      <div class="head__date">
-        <span>{{ date }}</span>
-      </div>
+      <span>{{ date }}</span>
     </header>
     <main class="content">
       <div class="content-info">
@@ -51,10 +49,14 @@ const date = new Date(props.data.date).toLocaleDateString('ru-RU')
   color: #8093ca;
   text-decoration: none;
 }
-.head__date {
+.head__lecturer
+{
+  width: fit-content;
+}
+.head {
   position: relative;
 }
-.head__date span
+.head span
 {
     position: absolute;
     top: 0;
