@@ -20,7 +20,8 @@ onBeforeMount(async () => {
 });
 
 let rawData;
-const socket = io("http://localhost:3000");
+const socket = io(process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL);
+console.log('dsa')
 const route = useRoute();
 const router = useRouter();
 const lecturer = route.params.lecturer;

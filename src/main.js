@@ -11,10 +11,8 @@ import ScheduleFinals from "./views/ScheduleFinals.vue";
 import Reviews from "./views/Reviews.vue"
 import ReviewsLecturer from "./views/ReviewsLecturer.vue"
 import App from "./App.vue";
-
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
 import { createPinia } from "pinia";
 const pinia = createPinia();
 import {

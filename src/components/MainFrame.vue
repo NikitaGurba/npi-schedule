@@ -224,6 +224,7 @@ const scrollToCurrentDay = () => {
 
 
 const isFinals = props.type === "st-fin" && props.type === "pr-fin";
+
 const prOrStFinals = props.type === "st-fin" || props.type === "pr-fin";
 </script>
 
@@ -247,7 +248,7 @@ const prOrStFinals = props.type === "st-fin" || props.type === "pr-fin";
           Назад
         </button>
         <button
-          v-if="!isFinals"
+          v-if="!prOrStFinals"
           class="header__button"
           id="firstWeek"
           @click="buttons(1)"
@@ -258,7 +259,7 @@ const prOrStFinals = props.type === "st-fin" || props.type === "pr-fin";
           1 Неделя
         </button>
         <button
-          v-if="!isFinals"
+          v-if="!prOrStFinals"
           class="header__button"
           id="secondWeek"
           @click="buttons(2)"
@@ -271,13 +272,13 @@ const prOrStFinals = props.type === "st-fin" || props.type === "pr-fin";
         <button
           class="header__button"
           id="session"
-          v-if="type != 'au' && !isFinals"
+          v-if="type !== 'au' && !prOrStFinals"
           @click="sessionButton()"
         >
           Сессия
         </button>
         <Pdf
-          v-if="!isFinals"
+          v-if="!prOrStFinals"
           :usedTypes="usedTypes"
           :info="info"
           :colors="colors"
