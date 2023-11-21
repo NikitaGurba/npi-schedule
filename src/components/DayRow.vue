@@ -3,6 +3,7 @@ import currentClass from "../utils/currentClass";
 import CustomIcon from "./CustomIcon.vue";
 import { computed, ref } from "vue";
 
+//пути через @
 const props = defineProps({
   data: Object,
   times: Object,
@@ -29,7 +30,6 @@ const hrefForLecturer = (name) => {
   return `/lecturers/${encodedURI}/schedule`;
 };
 
-
 const groupNameChecker = (name) => {
   return name.split("-").length === 3;
 };
@@ -38,7 +38,7 @@ function hrefForAuditorium(name) {
   return "/auditoriums/" + name + "/schedule";
 }
 
-const { type, firstRow, secondRow, thirdRow } = props.data;
+const { type, firstRow, secondRow, thirdRow } = props.data; //деструктуризация, теряется реактивность
 const classNum = props.data.class;
 let todaysDayOfWeek = new Date().getDay();
 todaysDayOfWeek = todaysDayOfWeek === 0 ? 7 : todaysDayOfWeek;
@@ -59,10 +59,25 @@ const startOfClass = props.times[classNum - 1][0];
 const endOfClass = props.times[classNum - 1][1];
 const collapsible = ref(null);
 
+const showMoreText = "Показать больше..."
+const showLessText = "Скрыть"
+
 function toggleCollapsible() {
   const collapsibleDivs = Array.from(
     collapsible.value.getElementsByClassName("box__text-item_collapsible"),
   );
+  const opacityText = collapsible.value.getElementsByClassName("box__text-item_opacity")[0]
+  if (opacityText.style.backgroundImage !== "none")
+  {
+    opacityText.style.backgroundImage = "none"
+    opacityText.style.color = "#f8f8f2"
+  }
+  else
+  {
+    opacityText.style.backgroundImage = "linear-gradient(to bottom, #f8f8f2 30%, transparent 100%)"
+    opacityText.style.color = "transparent"
+  }
+
   collapsibleDivs.map((item) => {
     item.style.display =
       item.style.display === "" || item.style.display === "none"
@@ -72,11 +87,21 @@ function toggleCollapsible() {
   const collapsiblePath =
     collapsible.value.getElementsByClassName("box__button")[0];
   collapsiblePath.innerText =
-    collapsiblePath.innerText === "Показывать больше..."
-      ? "Скрыть"
-      : "Показывать больше...";
+    collapsiblePath.innerText === showMoreText
+      ? showLessText
+      : showMoreText;
 }
-</script>
+
+const boxTextClass = isCurrent.value ? "box__text_selected" : "box__text";
+const boxTextItemClass = (i) =>
+{
+  if (i === 1)
+  {
+    return "box__text-item_opacity"
+  }
+  return i <= 0 ? "box__text-item" : "box__text-item_collapsible";
+}
+  </script>
 
 <template>
   <div class="day-row" ref="collapsible">
@@ -92,7 +117,7 @@ function toggleCollapsible() {
         <div class="box__icon">
           <CustomIcon name="bookmark" :color="bookmarkColor" />
         </div>
-        <div :class="isCurrent ? 'box__text_selected' : 'box__text'">
+        <div :class="boxTextClass">
           <b>{{ firstRow }}</b>
         </div>
       </div>
@@ -102,14 +127,15 @@ function toggleCollapsible() {
         </div>
         <div class="box__text">
           <div v-for="item in secondRow" class="box__text-item">
-            <a v-if="fullNameChecker(item)" :href="hrefForLecturer(item)">{{
-              item
-            }}</a>
+            <a v-if="fullNameChecker(item)" :href="hrefForLecturer(item)">
+              {{ item }}
+            </a>
             <a
               v-else-if="!groupNameChecker(item)"
               :href="hrefForAuditorium(item)"
-              >{{ item }}</a
             >
+              {{ item }}
+            </a>
             <span v-else>{{ item }}</span>
           </div>
         </div>
@@ -119,10 +145,7 @@ function toggleCollapsible() {
           <CustomIcon :name="isAuditorium" />
         </div>
         <div class="box__text">
-          <div
-            v-for="(item, i) in thirdRow"
-            :class="i < 2 ? 'box__text-item' : 'box__text-item_collapsible'"
-          >
+          <div v-for="(item, i) in thirdRow" :class="boxTextItemClass(i)">
             <a v-if="!groupNameChecker(item)" :href="hrefForAuditorium(item)">{{
               item
             }}</a>
@@ -130,9 +153,9 @@ function toggleCollapsible() {
           </div>
         </div>
       </div>
-      <div class="box" v-if="thirdRow.length > 3">
+      <div class="box" v-if="thirdRow.length > 2">
         <button class="box__button" @click="toggleCollapsible">
-          Показывать больше...
+          {{ showMoreText }}
         </button>
       </div>
     </div>
@@ -154,6 +177,12 @@ a:active {
   display: flex;
   flex-direction: row;
 }
+.box__text-item_opacity
+{
+    background-image: linear-gradient(to bottom, #f8f8f2 30%, transparent 100%);
+    background-clip: text;
+    color: transparent;
+  }
 .box__button {
   width: fit-content;
   outline: none;
@@ -162,8 +191,10 @@ a:active {
   padding-top: 0.3rem;
   padding-bottom: 0.3rem;
   cursor: pointer;
-  font-size: 0.7rem;
-  margin-left: 1.5rem;
+  font-size: 0.8rem;
+  margin-left: 1.6rem;
+  color: "#f8f8f2";
+  padding-top: 0;
 }
 .box__text-item_collapsible {
   display: none;

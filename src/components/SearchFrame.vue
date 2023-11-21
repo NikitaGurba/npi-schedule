@@ -24,7 +24,8 @@ const lastUpdatedText = lastUpdated.split("-").reverse().join(".");
 
   <div class="message">
     {{ inf.run[0] }}
-    <br />Обновлено: <b>{{ lastUpdatedText }}</b>
+    <br />
+    Обновлено: <b>{{ lastUpdatedText }}</b>
   </div>
 
   <Search class="search-cont" />
@@ -39,11 +40,9 @@ const lastUpdatedText = lastUpdated.split("-").reverse().join(".");
     <div class="footer__info-text">
       <span>Нашли баг? Возник вопрос? </span
       ><a href="https://vk.com/redmaunn">Пишите мне</a>
-      <a
-        style="display: block; width: fit-content"
-        href="https://github.com/RedMaun/npi-schedule"
-        >Исходный код</a
-      >
+      <a class="linkToGit" href="https://github.com/RedMaun/npi-schedule">
+        Исходный код
+      </a>
     </div>
   </div>
 </template>
@@ -51,6 +50,10 @@ const lastUpdatedText = lastUpdated.split("-").reverse().join(".");
 <style scoped>
 * {
   color: #f8f8f2;
+}
+.linkToGit {
+  display: block;
+  width: fit-content;
 }
 #one,
 #two {

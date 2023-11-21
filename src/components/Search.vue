@@ -72,7 +72,7 @@ async function getData(val) {
 
       <div v-if="inputSearch[1]">
         <div v-for="(i, index) in inputSearch[1]" :key="index">
-          <router-link :to="'/lecturers/' + i + '/schedule'">
+          <router-link :to="`/lecturers/${i}/schedule`">
             <button class="search-cont__group">
               {{ i }}
               <span class="search-cont__type">- Преподаватель</span>

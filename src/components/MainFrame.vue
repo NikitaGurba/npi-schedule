@@ -195,10 +195,9 @@ const areClassesExists = computed(() => {
 const week = computed(() => {
   return weeks[currentWeek.value - 1];
 });
-
-const scrollToCurrentDayRef = ref(null);
-
-let currentDay, headerHeight, currentDayScrollY, header = ref(null);
+let currentDay,
+  headerHeight,
+  header = ref(null);
 const getCurrentDay = () => {
   const days = Array.from(document.getElementsByClassName("day"));
   days.map((day) => {
@@ -206,10 +205,7 @@ const getCurrentDay = () => {
       currentDay = day;
     }
   });
-  
-  currentDayScrollY = currentDay ? currentDay.offsetTop : 0;
 };
-
 onMounted(() => {
   getCurrentDay();
   headerHeight = header.value.offsetHeight;
@@ -218,15 +214,17 @@ onUpdated(() => {
   getCurrentDay();
   headerHeight = header.value.offsetHeight;
 });
-
 const scrollToCurrentDay = () => {
-  let scrollBefore = window.scrollY;
-  currentDay.scrollIntoView({ block: "start" });
-  let scrollAfter = window.scrollY;
-  if (scrollAfter - scrollBefore !== 0) {
-    window.scroll(0, window.scrollY - headerHeight - 10);
-  }
+  const scrollY = currentDay.offsetTop - headerHeight - 10;
+  window.scrollTo({
+    top: scrollY,
+    behavior: "smooth",
+  });
 };
+
+
+const isFinals = props.type === "st-fin" && props.type === "pr-fin";
+const prOrStFinals = props.type === "st-fin" || props.type === "pr-fin";
 </script>
 
 <template>
@@ -237,11 +235,11 @@ const scrollToCurrentDay = () => {
       </div>
       <div class="header__groupName">
         {{ groupName }}
-        <span v-if="type === 'st-fin' && type === 'pr-fin'">Сессия</span>
+        <span v-if="isFinals">Сессия</span>
       </div>
       <div class="header__row">
         <button
-          v-if="type === 'st-fin' || type === 'pr-fin'"
+          v-if="prOrStFinals"
           class="header__button"
           id="back"
           @click="buttonBack()"
@@ -249,7 +247,7 @@ const scrollToCurrentDay = () => {
           Назад
         </button>
         <button
-          v-if="type != 'st-fin' && type != 'pr-fin'"
+          v-if="!isFinals"
           class="header__button"
           id="firstWeek"
           @click="buttons(1)"
@@ -260,7 +258,7 @@ const scrollToCurrentDay = () => {
           1 Неделя
         </button>
         <button
-          v-if="type != 'st-fin' && type != 'pr-fin'"
+          v-if="!isFinals"
           class="header__button"
           id="secondWeek"
           @click="buttons(2)"
@@ -273,13 +271,13 @@ const scrollToCurrentDay = () => {
         <button
           class="header__button"
           id="session"
-          v-if="type != 'au' && type != 'st-fin' && type != 'pr-fin'"
+          v-if="type != 'au' && !isFinals"
           @click="sessionButton()"
         >
           Сессия
         </button>
         <Pdf
-          v-if="type != 'st-fin' && type != 'pr-fin'"
+          v-if="!isFinals"
           :usedTypes="usedTypes"
           :info="info"
           :colors="colors"
@@ -303,7 +301,6 @@ const scrollToCurrentDay = () => {
       <div class="info-cont" v-else style="margin-top: 1rem"></div>
       <button
         class="scroll-to-current-day"
-        ref="scrollToCurrentDayRef"
         @click="scrollToCurrentDay"
       ></button>
       <div class="main-frame">
@@ -318,6 +315,7 @@ const scrollToCurrentDay = () => {
             :data="day"
             :times="times"
             :nextDay="nextDay"
+            :header="header"
           />
         </div>
         <div class="no-schedule" v-else>Нет расписания!</div>
@@ -331,7 +329,11 @@ const scrollToCurrentDay = () => {
           {{ colors[types].name }}
         </div>
       </div>
-      <a :href="hrefForReview(groupName)" v-if="type === 'pr'" class="review-button">
+      <a
+        :href="hrefForReview(groupName)"
+        v-if="type === 'pr'"
+        class="review-button"
+      >
         <button>Написать отзыв</button>
       </a>
     </div>
@@ -354,23 +356,20 @@ const scrollToCurrentDay = () => {
   align-items: center;
   justify-content: center;
 }
-.review-button
-{
+.review-button {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 10rem;
   text-decoration: none;
-  
 }
-.review-button button
-{
+.review-button button {
   padding: 1rem;
   border-radius: 1rem;
   border: none;
   cursor: pointer;
   background-color: #f8f8f2;
-  color: #282A36;
+  color: #282a36;
 }
 
 .scroll-to-current-day {

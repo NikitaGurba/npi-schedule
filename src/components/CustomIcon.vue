@@ -4,10 +4,6 @@ const props = defineProps({
   name: String,
   color: String,
 });
-// const iconClassName = computed(() => ({
-//   "fa-1x": true,
-//   [color]: true,
-// }));
 
 const stylesList = computed(() => ({
   color: props.color,

@@ -20,13 +20,12 @@ const props = defineProps({
       <span id="two">{{ TITLE_SMALL }}</span>
     </div>
     <div class="header__week">{{ currentWeek }} Неделя</div>
-    <router-link v-if="disableReview !== true" to="/reviews" class="header__reviews">Отзывы</router-link>
+    <router-link v-if="!disableReview" to="/reviews" class="header__reviews">Отзывы</router-link>
   </div>
 </template>
 
 <style scoped>
 .header {
-  /* padding: 0.5rem; */
   top: 0px;
   display: inline-flex;
   justify-content: center;
@@ -54,7 +53,6 @@ const props = defineProps({
 .header__logo {
   height: 3rem;
   width: 4.5rem;
-  /* margin-right: 1rem; */
 }
 #two
 {
@@ -72,7 +70,6 @@ const props = defineProps({
   padding: 1rem;
   background-color: #f8f8f2;
   color: #282a36;
-  /* margin-right: 1rem; */
   font-weight: 700;
 }
 .header__week {
@@ -81,7 +78,6 @@ const props = defineProps({
   line-height: 1rem;
   text-align: center;
   white-space: nowrap;
-  /* margin-right: 1rem; */
   border-radius: 1rem;
   padding: 1rem;
   background-color: #282a36;
