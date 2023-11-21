@@ -37,6 +37,7 @@ const dataExists = data.value !== null && data.value.length === 0;
 .frame {
   width: 40rem;
   margin: auto;
+  min-width: 20rem;
   margin-top: 5rem;
 }
 .no-reviews {
@@ -70,5 +71,13 @@ const dataExists = data.value !== null && data.value.length === 0;
 }
 .reviews-cont:last-child {
   margin-bottom: 10rem;
+}
+@media only screen and (max-width: 560px) {  .page-title__header
+  {
+    font-size: 1.4rem;
+  }
+  .frame{
+    width: 90%;
+  }
 }
 </style>
