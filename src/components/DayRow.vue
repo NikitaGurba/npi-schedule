@@ -19,7 +19,6 @@ const fullNameChecker = (name) => {
   if (splittedName.length < 3) {
     return false;
   }
-
   return splittedName[1].length === 1 && splittedName[2].length === 1;
 };
 
@@ -51,7 +50,7 @@ const isCurrent = computed(() => {
 const isGroup = props.pageType === "pr" ? "compass" : "user";
 
 const isAuditorium =
-  props.pageType === "pr" || props.pageType === "au" ? "user-group" : "compass";
+  (props.pageType === "pr" || props.pageType === "au") ? "user-group" : "compass";
 
 const bookmarkColor = props.colors[type].color;
 const startOfClass = props.times[classNum - 1][0];
@@ -122,18 +121,18 @@ const boxTextItemClass = (i, thirdRow) => {
         </div>
         <div class="box__text">
           <div v-for="item in secondRow" class="box__text-item">
-            <router-link
+            <a
               v-if="fullNameChecker(item)"
-              :to="hrefForLecturer(item)"
+              :href="hrefForLecturer(item)"
             >
               {{ item }}
-            </router-link>
-            <router-link
-              v-else-if="!groupNameChecker(item)"
-              :to="hrefForAuditorium(item)"
+            </a>
+            <a
+              v-else-if="pageType !== 'au'"
+              :href="hrefForAuditorium(item)"
             >
               {{ item }}
-            </router-link>
+            </a>
             <span v-else>{{ item }}</span>
           </div>
         </div>
@@ -147,10 +146,10 @@ const boxTextItemClass = (i, thirdRow) => {
             v-for="(item, i) in thirdRow"
             :class="boxTextItemClass(i, thirdRow)"
           >
-            <router-link
+            <a
               v-if="!groupNameChecker(item)"
-              :to="hrefForAuditorium(item)"
-              >{{ item }}</router-link
+              :href="hrefForAuditorium(item)"
+              >{{ item }}</a
             >
             <span v-else>{{ item }}</span>
           </div>
