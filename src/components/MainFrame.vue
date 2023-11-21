@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed, onMounted, onUpdated } from "vue";
+import { onBeforeRouteUpdate } from "vue-router";
 import DayCard from "./DayCard.vue";
 import Pdf from "./Pdf.vue";
-import { useRouter } from "vue-router";
 import { useTimesStore } from "@/stores/times";
 import { useCurrentWeekNumberStore } from "@/stores/weekNumber";
 import { useColorsStore } from "@/stores/colors";
@@ -16,12 +16,12 @@ const props = defineProps({
   errorMessage: String,
 });
 
+const reRender = ref(0)
 const timeSlotsStore = useTimesStore();
 await timeSlotsStore.getTimeSlots();
 const times = timeSlotsStore.timeSlots;
 const currentWeekNumberStore = useCurrentWeekNumberStore();
 const colorsStore = useColorsStore();
-const router = useRouter();
 
 const timeNow = ref(new Date().getHours() * 60 + new Date().getMinutes());
 setInterval(() => {
@@ -34,6 +34,10 @@ if ((weeks[0] || weeks[1]) && weeks[0].length === 0 && weeks[1].length === 0) {
   if (errorMessage != undefined) errorMessage += " Нет расписания!";
   else errorMessage = "Нет расписания!";
 }
+
+onBeforeRouteUpdate(() => {
+  reRender.value++
+})
 
 let currentWeek = ref(null),
   nextDay,
@@ -168,16 +172,9 @@ function buttons(val) {
   }
   currentWeek.value = val;
 }
-function sessionButton() {
-  router.push({
-    path: window.location.pathname.split("/schedule")[0] + "/finals-schedule",
-  });
-}
-function buttonBack() {
-  router.push({
-    path: window.location.pathname.split("/finals-schedule")[0] + "/schedule",
-  });
-}
+const sessionHref = () => window.location.pathname.split("/schedule")[0] + "/finals-schedule"
+const buttonBack = () => window.location.pathname.split("/finals-schedule")[0] + "/schedule"
+
 const dragHandler = (dragState) => {
   if (dragState.swipe[0] === 1 && dragState.swipe[1] === 0) {
     buttons(1);
@@ -222,31 +219,30 @@ const scrollToCurrentDay = () => {
   });
 };
 
-
 const isFinals = props.type === "st-fin" && props.type === "pr-fin";
-
 const prOrStFinals = props.type === "st-fin" || props.type === "pr-fin";
 </script>
 
 <template>
-  <div v-drag="dragHandler">
+  <div v-drag="dragHandler" :key="reRender">
     <div class="header" ref="header">
       <div class="header__logo">
-        <router-link to="/"><img src="/logo.png" /></router-link>
+        <a href="/"><img src="/logo.png" /></a>
       </div>
       <div class="header__groupName">
         {{ groupName }}
         <span v-if="isFinals">Сессия</span>
       </div>
       <div class="header__row">
-        <button
+        <a
+          :href="buttonBack()"
           v-if="prOrStFinals"
           class="header__button"
           id="back"
-          @click="buttonBack()"
+          
         >
           Назад
-        </button>
+        </a>
         <button
           v-if="!prOrStFinals"
           class="header__button"
@@ -269,14 +265,14 @@ const prOrStFinals = props.type === "st-fin" || props.type === "pr-fin";
         >
           2 Неделя
         </button>
-        <button
+        <a
+          :href="sessionHref()"
           class="header__button"
           id="session"
           v-if="type !== 'au' && !prOrStFinals"
-          @click="sessionButton()"
         >
           Сессия
-        </button>
+        </a>
         <Pdf
           v-if="!prOrStFinals"
           :usedTypes="usedTypes"

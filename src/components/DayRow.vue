@@ -58,23 +58,23 @@ const startOfClass = props.times[classNum - 1][0];
 const endOfClass = props.times[classNum - 1][1];
 const collapsible = ref(null);
 
-const showMoreText = "Показать больше..."
-const showLessText = "Скрыть"
+const showMoreText = "Показать больше...";
+const showLessText = "Скрыть";
 
 function toggleCollapsible() {
   const collapsibleDivs = Array.from(
     collapsible.value.getElementsByClassName("box__text-item_collapsible"),
   );
-  const opacityText = collapsible.value.getElementsByClassName("box__text-item_opacity")[0]
-  if (opacityText.style.backgroundImage !== "none")
-  {
-    opacityText.style.backgroundImage = "none"
-    opacityText.style.color = "#f8f8f2"
-  }
-  else
-  {
-    opacityText.style.backgroundImage = "linear-gradient(to bottom, #f8f8f2 30%, transparent 100%)"
-    opacityText.style.color = "transparent"
+  const opacityText = collapsible.value.getElementsByClassName(
+    "box__text-item_opacity",
+  )[0];
+  if (opacityText.style.backgroundImage !== "none") {
+    opacityText.style.backgroundImage = "none";
+    opacityText.style.color = "#f8f8f2";
+  } else {
+    opacityText.style.backgroundImage =
+      "linear-gradient(to bottom, #f8f8f2 30%, transparent 100%)";
+    opacityText.style.color = "transparent";
   }
 
   collapsibleDivs.map((item) => {
@@ -86,21 +86,17 @@ function toggleCollapsible() {
   const collapsiblePath =
     collapsible.value.getElementsByClassName("box__button")[0];
   collapsiblePath.innerText =
-    collapsiblePath.innerText === showMoreText
-      ? showLessText
-      : showMoreText;
+    collapsiblePath.innerText === showMoreText ? showLessText : showMoreText;
 }
 
 const boxTextClass = isCurrent.value ? "box__text_selected" : "box__text";
-const boxTextItemClass = (i) =>
-{
-  if (i === 1)
-  {
-    return "box__text-item_opacity"
+const boxTextItemClass = (i, thirdRow) => {
+  if (i === 1 && thirdRow.length > 2) {
+    return "box__text-item_opacity";
   }
-  return i <= 0 ? "box__text-item" : "box__text-item_collapsible";
-}
-  </script>
+  return i <= 1 ? "box__text-item" : "box__text-item_collapsible";
+};
+</script>
 
 <template>
   <div class="day-row" ref="collapsible">
@@ -126,15 +122,18 @@ const boxTextItemClass = (i) =>
         </div>
         <div class="box__text">
           <div v-for="item in secondRow" class="box__text-item">
-            <a v-if="fullNameChecker(item)" :href="hrefForLecturer(item)">
-              {{ item }}
-            </a>
-            <a
-              v-else-if="!groupNameChecker(item)"
-              :href="hrefForAuditorium(item)"
+            <router-link
+              v-if="fullNameChecker(item)"
+              :to="hrefForLecturer(item)"
             >
               {{ item }}
-            </a>
+            </router-link>
+            <router-link
+              v-else-if="!groupNameChecker(item)"
+              :to="hrefForAuditorium(item)"
+            >
+              {{ item }}
+            </router-link>
             <span v-else>{{ item }}</span>
           </div>
         </div>
@@ -144,10 +143,15 @@ const boxTextItemClass = (i) =>
           <CustomIcon :name="isAuditorium" />
         </div>
         <div class="box__text">
-          <div v-for="(item, i) in thirdRow" :class="boxTextItemClass(i)">
-            <a v-if="!groupNameChecker(item)" :href="hrefForAuditorium(item)">{{
-              item
-            }}</a>
+          <div
+            v-for="(item, i) in thirdRow"
+            :class="boxTextItemClass(i, thirdRow)"
+          >
+            <router-link
+              v-if="!groupNameChecker(item)"
+              :to="hrefForAuditorium(item)"
+              >{{ item }}</router-link
+            >
             <span v-else>{{ item }}</span>
           </div>
         </div>
@@ -176,12 +180,11 @@ a:active {
   display: flex;
   flex-direction: row;
 }
-.box__text-item_opacity
-{
-    background-image: linear-gradient(to bottom, #f8f8f2 30%, transparent 100%);
-    background-clip: text;
-    color: transparent;
-  }
+.box__text-item_opacity {
+  background-image: linear-gradient(to bottom, #f8f8f2 30%, transparent 100%);
+  background-clip: text;
+  color: transparent;
+}
 .box__button {
   width: fit-content;
   outline: none;

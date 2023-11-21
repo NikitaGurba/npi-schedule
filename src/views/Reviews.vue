@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref } from "vue";
 import Review from "@/components/Review.vue";
 import { io } from "socket.io-client";
 const data = ref(null);
@@ -37,13 +37,13 @@ const dataExists = data.value !== null && data.value.length === 0;
 .frame {
   width: 40rem;
   margin: auto;
+  margin-top: 5rem;
 }
 .no-reviews {
   color: #c7c7c7;
 }
 .page-title {
   width: fit-content;
-  margin-top: 5rem;
   display: flex;
   gap: 1rem;
   align-items: center;

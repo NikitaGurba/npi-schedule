@@ -10,9 +10,9 @@ const date = new Date(props.data.date).toLocaleDateString('ru-RU')
 <template>
   <article class="review">
     <header class="head">
-      <a v-if="lecturer" :href="`/reviews/${lecturer}`" class="head__lecturer">
+      <router-link v-if="lecturer" :to="`/reviews/${lecturer}`" class="head__lecturer">
         {{ lecturer }}
-      </a>
+      </router-link>
       <span>{{ date }}</span>
     </header>
     <main class="content">

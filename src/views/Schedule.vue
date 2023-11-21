@@ -1,7 +1,5 @@
 <script setup>
 import MainFrame from "@/components/MainFrame.vue";
-import Spinner from "@/components/Spinner.vue";
-import Header from "@/components/Header.vue";
 import axios from "axios";
 import dataRefactoring from "@/utils/dataRefactoring";
 import { useRoute } from "vue-router";
@@ -37,19 +35,12 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <Header></Header>
-  <Suspense timeout="0">
-    <template #default>
-      <MainFrame
-        v-if="urlJson !== null && weeks !== null && groupName !== null"
-        :type="type"
-        :groupName="groupName"
-        :info="[urlJson.finals, urlJson.semester]"
-        :weeks="weeks"
-      ></MainFrame>
-    </template>
-    <template #fallback>
-      <Spinner />
-    </template>
-  </Suspense>
+  <MainFrame
+    v-if="urlJson !== null && weeks !== null && groupName !== null"
+    :type="type"
+    :groupName="groupName"
+    :info="[urlJson.finals, urlJson.semester]"
+    :weeks="weeks"
+  >
+  </MainFrame>
 </template>

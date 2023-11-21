@@ -1,7 +1,5 @@
 <script setup>
 import MainFrame from "@/components/MainFrame.vue";
-import Spinner from "@/components/Spinner.vue";
-import Header from "@/components/Header.vue";
 import axios from "axios";
 import { ref, onBeforeMount } from "vue";
 import finalsDataRefactoring from "@/utils/finalsDataRefactoring";
@@ -66,20 +64,12 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <Header></Header>
-  <Suspense timeout="0">
-    <template #default>
-      <MainFrame
-        v-if="weeks"
-        :type="type"
-        :groupName="group"
-        :info="[]"
-        :weeks="weeks"
-        :errorMessage="errorMessage"
-      ></MainFrame>
-    </template>
-    <template #fallback>
-      <Spinner />
-    </template>
-  </Suspense>
+  <MainFrame
+    v-if="weeks"
+    :type="type"
+    :groupName="group"
+    :info="[]"
+    :weeks="weeks"
+    :errorMessage="errorMessage"
+  ></MainFrame>
 </template>

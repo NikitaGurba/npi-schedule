@@ -2,7 +2,6 @@
 import { ref, onMounted, onBeforeMount } from "vue";
 import Review from "@/components/Review.vue";
 import Grade from "@/components/Grade.vue";
-import Header from "@/components/Header.vue";
 import { useRoute, useRouter } from "vue-router";
 import { io } from "socket.io-client";
 import { LECTURERS_URL } from "@/constants";
@@ -22,7 +21,6 @@ onBeforeMount(async () => {
 let rawData;
 const socket = io(process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL);
 const route = useRoute();
-const router = useRouter();
 const maxInputLength = 250;
 const lecturer = route.params.lecturer;
 const data = ref(null);
@@ -30,7 +28,6 @@ const grade = ref(null);
 const gradeNumber = ref(0);
 const formText = ref("");
 const submitButton = ref(null);
-const goBack = ref(null);
 socket.on("connect", () => {
   socket.emit("getSpecificData", lecturer);
   socket.on("takeSpecificData", (comments) => {
@@ -72,20 +69,17 @@ onMounted(() => {
     formText.value = ''
     socket.emit("getSpecificData", lecturer);
   };
-  goBack.value.onclick = () => {
-    router.go(-1);
-  };
 });
 const dataExists = data.value !== null && data.value.length === 0;
 </script>
 <template>
   <div class="frame">
     <div class="title">
-      <div ref="goBack" class="title__go-back">
+      <router-link to="/reviews" class="title__go-back">
         <button class="title__button">
           <font-awesome-icon icon="arrow-left" class="title__icon fa-lg" />
         </button>
-      </div>
+      </router-link>
       <header class="title__header">Отзывы о {{ lecturer }}</header>
     </div>
     <div class="form-cont">
@@ -121,7 +115,7 @@ const dataExists = data.value !== null && data.value.length === 0;
 .frame {
   width: 40rem;
   margin: auto;
-  margin-top: 3rem;
+  margin-top: 5rem;
 }
 .title {
   width: fit-content;

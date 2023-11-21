@@ -4,17 +4,21 @@ import {
   TITLE_SMALL,
 } from "@/constants";
 import { useCurrentWeekNumberStore } from "@/stores/weekNumber";
+import { ref } from "vue";
+const ready = ref(false)
 const currentWeekNumberStore = useCurrentWeekNumberStore();
 await currentWeekNumberStore.getCurrentWeekNumber();
 const currentWeek = currentWeekNumberStore.currentWeekNumber;
 const props = defineProps({
     disableReview: Boolean,
 });
+ready.value = true
+
 </script>
 
 <template>
-  <div class="header">
-    <a href="/" class="header__logo"><img src="/logo.png" /></a>
+  <div class="header" v-if="ready">
+    <router-link to="/" class="header__logo"><img src="/logo.png" /></router-link>
     <div class="header__title">
       <span id="one">{{ TITLE_FULL }}</span>
       <span id="two">{{ TITLE_SMALL }}</span>

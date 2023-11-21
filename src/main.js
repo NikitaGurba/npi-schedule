@@ -110,10 +110,12 @@ const routes = [
   {
     path: "/reviews",
     component: Reviews,
+    meta: { transition: 'slide-fade' },
   },
   {
     path: "/reviews/:lecturer",
     component: ReviewsLecturer,
+    meta: { transition: 'slide-fade' },
   }
 ];
 
