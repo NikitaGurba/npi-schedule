@@ -1,30 +1,30 @@
 <script setup>
-import {
-  TITLE_FULL,
-  TITLE_SMALL,
-} from "@/constants";
+import { TITLE_FULL, TITLE_SMALL } from "@/constants";
 import { useCurrentWeekNumberStore } from "@/stores/weekNumber";
 import { ref } from "vue";
-const ready = ref(false)
+const ready = ref(false);
 const currentWeekNumberStore = useCurrentWeekNumberStore();
 await currentWeekNumberStore.getCurrentWeekNumber();
 const currentWeek = currentWeekNumberStore.currentWeekNumber;
 const props = defineProps({
-    disableReview: Boolean,
+  disableReview: Boolean,
 });
-ready.value = true
-
+ready.value = true;
 </script>
 
 <template>
   <div class="header" v-if="ready">
-    <router-link to="/" class="header__logo"><img src="/logo.png" /></router-link>
+    <router-link to="/" class="header__logo"
+      ><img src="/logo.png"
+    /></router-link>
     <div class="header__title">
       <span id="one">{{ TITLE_FULL }}</span>
       <span id="two">{{ TITLE_SMALL }}</span>
     </div>
     <div class="header__week">{{ currentWeek }} Неделя</div>
-    <router-link v-if="!disableReview" to="/reviews" class="header__reviews">Отзывы</router-link>
+    <router-link v-if="!disableReview" to="/reviews" class="header__reviews"
+      >Отзывы</router-link
+    >
   </div>
 </template>
 
@@ -42,14 +42,13 @@ ready.value = true
   background-color: #44475a;
   border-bottom: 0.1rem solid #6272a4;
 }
-.header__reviews
-{
-    background-color: #353744;
-    padding: 1rem;
-    height: 1rem;
-    border-radius: 1rem;
-    text-decoration: none;
-    color: #f8f8f2;
+.header__reviews {
+  background-color: #353744;
+  padding: 1rem;
+  height: 1rem;
+  border-radius: 1rem;
+  text-decoration: none;
+  color: #f8f8f2;
 }
 .header__title #two {
   display: none;
@@ -58,9 +57,8 @@ ready.value = true
   height: 3rem;
   width: 4.5rem;
 }
-#two
-{
-    white-space: nowrap;
+#two {
+  white-space: nowrap;
 }
 .header__logo img {
   height: 3rem;
@@ -98,8 +96,7 @@ ready.value = true
   * {
     font-size: small;
   }
-  .header
-  {
+  .header {
     padding-top: 1rem;
     padding-bottom: 1rem;
     gap: 0.3rem;
@@ -113,17 +110,16 @@ ready.value = true
   .header__title #two {
     display: block;
   }
-  .header__title, .header__week, .header__reviews
-  {
+  .header__title,
+  .header__week,
+  .header__reviews {
     padding-left: 0.4rem;
     padding-right: 0.4rem;
   }
-
 }
 @media only screen and (max-width: 370px) {
-    #two
-    {
-        font-size: xx-small;
-    }
+  #two {
+    font-size: xx-small;
+  }
 }
 </style>

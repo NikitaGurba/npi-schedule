@@ -16,7 +16,7 @@ const props = defineProps({
   errorMessage: String,
 });
 
-const reRender = ref(0)
+const reRender = ref(0);
 const timeSlotsStore = useTimesStore();
 await timeSlotsStore.getTimeSlots();
 const times = timeSlotsStore.timeSlots;
@@ -36,8 +36,8 @@ if ((weeks[0] || weeks[1]) && weeks[0].length === 0 && weeks[1].length === 0) {
 }
 
 onBeforeRouteUpdate(() => {
-  reRender.value++
-})
+  reRender.value++;
+});
 
 let currentWeek = ref(null),
   nextDay,
@@ -172,8 +172,12 @@ function buttons(val) {
   }
   currentWeek.value = val;
 }
-const sessionButton = () => window.location.href = window.location.pathname.split("/schedule")[0] + "/finals-schedule"
-const buttonBack = () => window.location.href = window.location.pathname.split("/finals-schedule")[0] + "/schedule"
+const sessionButton = () =>
+  (window.location.href =
+    window.location.pathname.split("/schedule")[0] + "/finals-schedule");
+const buttonBack = () =>
+  (window.location.href =
+    window.location.pathname.split("/finals-schedule")[0] + "/schedule");
 
 const dragHandler = (dragState) => {
   if (dragState.swipe[0] === 1 && dragState.swipe[1] === 0) {
@@ -239,7 +243,6 @@ const prOrStFinals = props.type === "st-fin" || props.type === "pr-fin";
           v-if="prOrStFinals"
           class="header__button"
           id="back"
-          
         >
           Назад
         </button>

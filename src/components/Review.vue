@@ -4,13 +4,17 @@ const props = defineProps({
   data: Object,
 });
 const { name, grade, text, lecturer } = props.data;
-const date = new Date(props.data.date).toLocaleDateString('ru-RU')
+const date = new Date(props.data.date).toLocaleDateString("ru-RU");
 </script>
 
 <template>
   <article class="review">
     <header class="head">
-      <router-link v-if="lecturer" :to="`/reviews/${lecturer}`" class="head__lecturer">
+      <router-link
+        v-if="lecturer"
+        :to="`/reviews/${lecturer}`"
+        class="head__lecturer"
+      >
         {{ lecturer }}
       </router-link>
       <span>{{ date }}</span>
@@ -49,17 +53,15 @@ const date = new Date(props.data.date).toLocaleDateString('ru-RU')
   color: #8093ca;
   text-decoration: none;
 }
-.head__lecturer
-{
+.head__lecturer {
   width: fit-content;
 }
 .head {
   position: relative;
 }
-.head span
-{
-    position: absolute;
-    top: 0;
-    right: 0;
+.head span {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 </style>

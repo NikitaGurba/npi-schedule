@@ -11,9 +11,8 @@ const props = defineProps({
   colors: Object,
   timeNow: Number,
   times: Object,
-  header: Object
+  header: Object,
 });
-
 
 const { day, classes } = props.data;
 let date;
@@ -33,20 +32,19 @@ const dayOfWeekClass = !isCurrentDay
 
 const scrollToCurrentDay = () => {
   if (isCurrentDay) {
-    let activeClassScrollY = activeClass.value.offsetTop
-    if (props.header !== null)
-    {
+    let activeClassScrollY = activeClass.value.offsetTop;
+    if (props.header !== null) {
       let headerHeight = props.header.offsetHeight;
-      window.scrollTo({top: activeClassScrollY - headerHeight - 10});
+      window.scrollTo({ top: activeClassScrollY - headerHeight - 10 });
     }
   }
-}
+};
 onUpdated(() => {
-  scrollToCurrentDay()
+  scrollToCurrentDay();
 });
 onMounted(() => {
-  scrollToCurrentDay()
-})
+  scrollToCurrentDay();
+});
 </script>
 
 <template>

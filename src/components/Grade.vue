@@ -1,7 +1,7 @@
 <script setup>
 const props = defineProps({
   grade: Number,
-  size: String
+  size: String,
 });
 </script>
 
@@ -9,7 +9,6 @@ const props = defineProps({
   <div class="icon-cont">
     <div v-for="index in 5" :id="index">
       <font-awesome-icon
-      
         :style="{ color: grade >= index ? '#F1FA8C' : '#44475A' }"
         icon="star"
         class="icon-cont__icon"
@@ -24,5 +23,4 @@ const props = defineProps({
   display: flex;
   flex-direction: row;
 }
-    
 </style>

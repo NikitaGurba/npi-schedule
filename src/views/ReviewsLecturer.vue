@@ -121,7 +121,6 @@ const dataExists = data.value !== null && data.value.length === 0;
 .title {
   width: fit-content;
   display: flex;
-  /* padding-left: 1rem; */
   margin-bottom: 1rem;
   gap: 1rem;
   align-items: center;
@@ -133,8 +132,6 @@ const dataExists = data.value !== null && data.value.length === 0;
   padding-top: 1rem;
   box-sizing: border-box;
   border-radius: 0.5rem;
-  /* margin: auto;/ */
-  /* margin: auto; */
 }
 
 .title__header {
@@ -158,19 +155,15 @@ const dataExists = data.value !== null && data.value.length === 0;
   margin-top: 1rem;
 }
 .form {
-  /* width: 30rem; */
   padding: 1rem;
   padding-top: 0.2rem;
   padding-bottom: 0.5rem;
-  /* border-radius: 0.5rem; */
-  /* background-color: #282A36; */
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
 }
 .grade-cont {
-  /* width: 100%; */
   align-self: start;
   cursor: pointer;
   margin-top: 0.5rem;
@@ -185,7 +178,6 @@ const dataExists = data.value !== null && data.value.length === 0;
   padding: 0.5rem;
   border-radius: 0.5rem;
   width: 100%;
-  /* width: 100%; */
   height: 7rem;
   outline: none;
   resize: none;
@@ -201,7 +193,6 @@ const dataExists = data.value !== null && data.value.length === 0;
   background-color: #353744;
   padding: 0.5rem;
   border-radius: 0.5rem;
-  /* border: 0.1rem solid rgb(93, 97, 114); */
   border: 0.1rem solid #44475a;
   align-self: end;
 }
