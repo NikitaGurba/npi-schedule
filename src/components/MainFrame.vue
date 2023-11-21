@@ -172,8 +172,8 @@ function buttons(val) {
   }
   currentWeek.value = val;
 }
-const sessionHref = () => window.location.pathname.split("/schedule")[0] + "/finals-schedule"
-const buttonBack = () => window.location.pathname.split("/finals-schedule")[0] + "/schedule"
+const sessionButton = () => window.location.href = window.location.pathname.split("/schedule")[0] + "/finals-schedule"
+const buttonBack = () => window.location.href = window.location.pathname.split("/finals-schedule")[0] + "/schedule"
 
 const dragHandler = (dragState) => {
   if (dragState.swipe[0] === 1 && dragState.swipe[1] === 0) {
@@ -234,15 +234,15 @@ const prOrStFinals = props.type === "st-fin" || props.type === "pr-fin";
         <span v-if="isFinals">Сессия</span>
       </div>
       <div class="header__row">
-        <a
-          :href="buttonBack()"
+        <button
+          @click="buttonBack()"
           v-if="prOrStFinals"
           class="header__button"
           id="back"
           
         >
           Назад
-        </a>
+        </button>
         <button
           v-if="!prOrStFinals"
           class="header__button"
@@ -265,14 +265,14 @@ const prOrStFinals = props.type === "st-fin" || props.type === "pr-fin";
         >
           2 Неделя
         </button>
-        <a
-          :href="sessionHref()"
+        <button
           class="header__button"
           id="session"
           v-if="type !== 'au' && !prOrStFinals"
+          @click="sessionButton()"
         >
           Сессия
-        </a>
+        </button>
         <Pdf
           v-if="!prOrStFinals"
           :usedTypes="usedTypes"
