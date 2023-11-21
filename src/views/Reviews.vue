@@ -72,11 +72,11 @@ const dataExists = data.value !== null && data.value.length === 0;
 .reviews-cont:last-child {
   margin-bottom: 10rem;
 }
-@media only screen and (max-width: 560px) {  .page-title__header
-  {
+@media only screen and (max-width: 560px) {
+  .page-title__header {
     font-size: 1.4rem;
   }
-  .frame{
+  .frame {
     width: 90%;
   }
 }
