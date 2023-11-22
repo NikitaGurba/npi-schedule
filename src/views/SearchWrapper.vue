@@ -2,7 +2,8 @@
 <script setup>
 import HeaderFull from "@/components/HeaderFull.vue";
 import { defineAsyncComponent, ref, onMounted } from "vue";
-const Search = defineAsyncComponent(() => import("../components/Search.vue"));
+const Search = defineAsyncComponent(() => import("@/components/Search.vue"));
+const Table = defineAsyncComponent(() => import("@/components/Table.vue"));
 let lastUrl,
   lastName = "";
 if ((lastUrl = localStorage.getItem("url"))) {
@@ -54,6 +55,7 @@ onMounted(() => {
     <a :href="lastUrl" v-if="lastName">{{ lastName }}</a>
     <a :href="lastUrl" v-else>Ссылка</a>
   </div>
+  <Table></Table>
   <div class="footer footer-down" ref="footer">
     <div class="footer__cont">
       <font-awesome-icon class="footer__info-icon fa-2x" icon="circle-info" />
@@ -85,11 +87,10 @@ onMounted(() => {
   width: fit-content;
   margin: auto;
   margin-top: 2rem;
-  margin-bottom: 90vh;
 }
 
 .search-cont {
-  margin-top: 15rem;
+  margin-top: 10rem;
 }
 .message {
   width: fit-content;
@@ -126,6 +127,7 @@ onMounted(() => {
   border-radius: 0.8rem;
   margin: auto;
   margin-top: 4rem;
+  margin-bottom: 30vh;
 }
 @media only screen and (max-width: 840px) {
   .table-cont {

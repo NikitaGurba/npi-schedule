@@ -37,6 +37,12 @@ socket.on("connect", () => {
     });
     data.value = rawData;
   });
+  socket.on("dataWriteSuccess", () => {
+    socket.emit("getSpecificData", lecturer);
+  })
+  socket.on("dataWriteFail", (error) => {
+    alert(error)
+  })
 });
 
 const paintStars = (array, index) => {
@@ -64,10 +70,12 @@ onMounted(() => {
   });
   submitButton.value.onclick = (e) => {
     e.preventDefault();
-    socket.emit("takeData", formText.value, gradeNumber.value, lecturer);
+    if (formText.value !== '' && gradeNumber.value !== 0)
+    {
+      socket.emit("takeData", formText.value, gradeNumber.value, lecturer);
+    }
     gradeNumber.value = 0
     formText.value = ''
-    socket.emit("getSpecificData", lecturer);
   };
 });
 const dataExists = data.value !== null && data.value.length === 0;
