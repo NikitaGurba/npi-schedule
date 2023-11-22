@@ -14,17 +14,13 @@ ready.value = true;
 
 <template>
   <div class="header" v-if="ready">
-    <router-link to="/" class="header__logo"
-      ><img src="/logo.png"
-    /></router-link>
+    <a href="/" class="header__logo"><img src="/logo.png" /></a>
     <div class="header__title">
       <span id="one">{{ TITLE_FULL }}</span>
       <span id="two">{{ TITLE_SMALL }}</span>
     </div>
     <div class="header__week">{{ currentWeek }} Неделя</div>
-    <router-link v-if="!disableReview" to="/reviews" class="header__reviews"
-      >Отзывы</router-link
-    >
+    <a v-if="!disableReview" href="/reviews" class="header__reviews"> Отзывы</a>
   </div>
 </template>
 
@@ -129,17 +125,14 @@ ready.value = true;
   * {
     font-size: x-small;
   }
-  .header__week
-  {
+  .header__week {
     width: fit-content;
   }
-  .header__logo
-  {
+  .header__logo {
     width: 3.5rem;
     height: 2.5rem;
   }
-  .header__logo img
-  {
+  .header__logo img {
     width: 3.5rem;
     height: 2.5rem;
   }

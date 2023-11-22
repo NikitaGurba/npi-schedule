@@ -1,9 +1,10 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import Review from "@/components/Review.vue";
 import { io } from "socket.io-client";
-const data = ref(null);
+import Popup from "@/components/addReviewPopup.vue"
 
+const data = ref(null);
 const socket = io(
   process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL,
 );
@@ -14,9 +15,17 @@ socket.on("connect", () => {
   });
 });
 const dataExists = data.value !== null && data.value.length === 0;
+
+const popupActive = ref(false)
+const popupView = computed(() => popupActive.value ? Popup : '')
+const popupToggle = () => popupActive.value = !popupActive.value
+
 </script>
 
 <template>
+  <Transition name="fade">
+    <component :is="popupView" :toggleFunc="popupToggle"></component>
+  </Transition>
   <div class="frame">
     <div class="page-title">
       <a href="/">
@@ -25,6 +34,11 @@ const dataExists = data.value !== null && data.value.length === 0;
         </button>
       </a>
       <header class="page-title__header">Недавние отзывы</header>
+      <div class="page-title__cont">
+        <button class="page-title__button page-title__add-review" @click="popupToggle">
+          <font-awesome-icon icon="plus" class="page-title__icon fa-lg"/>
+        </button>
+      </div>
     </div>
     <div class="reviews-cont">
       <div v-if="dataExists" class="no-reviews">Отзывов пока нет</div>
@@ -33,7 +47,15 @@ const dataExists = data.value !== null && data.value.length === 0;
   </div>
 </template>
 
-<style scoped>
+<style>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .2s
+}
+.fade-enter,
+.fade-leave-to {
+    opacity: 0
+}
 .frame {
   width: 40rem;
   margin: auto;
@@ -43,14 +65,29 @@ const dataExists = data.value !== null && data.value.length === 0;
 .no-reviews {
   color: #c7c7c7;
 }
+.page-title__add-review
+{
+  position: absolute;
+  right: 0;
+}
+.page-title__cont
+{
+  position: relative;
+  width: 100%;
+  height: 2.5rem;
+}
 .page-title {
-  width: fit-content;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+  width: 100%;
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 .page-title__header {
   font-size: 2rem;
+  width: 60rem;
 }
 .page-title__button {
   width: 2.5rem;

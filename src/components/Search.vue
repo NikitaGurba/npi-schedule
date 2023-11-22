@@ -162,6 +162,7 @@ a {
   text-align: left;
   border-radius: 0.5rem;
   position: relative;
+  z-index: 5;
 }
 .search-cont__group:hover {
   background-color: #6272a4;

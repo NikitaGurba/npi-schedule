@@ -25,7 +25,8 @@ import {
   faCircleInfo,
   faPlus,
   faStar,
-  faArrowLeft
+  faArrowLeft,
+  faX,
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./registerServiceWorker";
@@ -40,7 +41,8 @@ library.add([
   faCircleInfo,
   faPlus,
   faStar,
-  faArrowLeft
+  faArrowLeft,
+  faX,
 ]);
 const routes = [
   { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
