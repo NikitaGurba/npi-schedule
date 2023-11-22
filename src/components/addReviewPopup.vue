@@ -67,7 +67,7 @@ const getData = async () => {
   font-size: 1.3rem;
 }
 .href-cont {
-  width: 30rem;
+  width: 90%;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
@@ -76,6 +76,23 @@ const getData = async () => {
   /* padding: 1rem; */
   border-radius: 0.5rem;
 }
+.href-cont::-webkit-scrollbar {
+  width: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+.href-cont::-webkit-scrollbar-track {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  background-color: #1a1b22;
+}
+
+.href-cont::-webkit-scrollbar-thumb {
+  border-radius: 0.5rem;
+  background-color: #232530;
+  /* box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+}
+
 .href-cont__item {
   background-color: #44475a;
   padding: 0.4rem;
@@ -97,7 +114,7 @@ const getData = async () => {
   cursor: pointer;
 }
 .popup__input {
-  width: 30rem;
+  width: 60%;
   padding: 0.5rem;
   border: 0.1rem solid #44475a;
   background-color: #232530;
