@@ -51,8 +51,8 @@ async function getData(val) {
     >
       <div v-if="inputSearch[0]">
         <div v-for="(i, index) in inputSearch[0]" :key="index">
-          <router-link
-            :to="
+          <a
+            :href="
               '/faculties/' +
               i[1].faculty +
               '/years/' +
@@ -66,37 +66,37 @@ async function getData(val) {
               {{ i[0] }}
               <span class="search-cont__type">- Группа</span>
             </button>
-          </router-link>
+          </a>
         </div>
       </div>
 
       <div v-if="inputSearch[1]">
         <div v-for="(i, index) in inputSearch[1]" :key="index">
-          <router-link :to="`/lecturers/${i}/schedule`">
+          <a :href="`/lecturers/${i}/schedule`">
             <button class="search-cont__group">
               {{ i }}
               <span class="search-cont__type">- Преподаватель</span>
             </button>
-          </router-link>
+          </a>
         </div>
       </div>
 
       <div v-if="inputSearch[2]">
         <div v-for="(i, index) in inputSearch[2]" :key="index">
-          <router-link :to="'/auditoriums/' + i + '/schedule'">
+          <a :href="'/auditoriums/' + i + '/schedule'">
             <button class="search-cont__group">
               {{ i }}
               <span class="search-cont__type">- Аудитория</span>
             </button>
-          </router-link>
+          </a>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style>
-router-link {
+<style scoped>
+a {
   width: 100%;
 }
 .search-cont {

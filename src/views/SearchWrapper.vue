@@ -1,47 +1,69 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import axios from "axios";
 import HeaderFull from "@/components/HeaderFull.vue";
-import { defineAsyncComponent } from "vue";
-import { INF_LINES_URL, LAST_UPDATED_URL } from "@/constants";
-
+import { defineAsyncComponent, ref, onMounted } from "vue";
 const Search = defineAsyncComponent(() => import("../components/Search.vue"));
-const Table = defineAsyncComponent(() => import("../components/Table.vue"));
-
 let lastUrl,
   lastName = "";
 if ((lastUrl = localStorage.getItem("url"))) {
   lastUrl = localStorage.getItem("url").split(",")[0];
   lastName = localStorage.getItem("url").split(",")[1];
 }
-const inf = (await axios.get(INF_LINES_URL)).data;
-const lastUpdated = (await axios.get(LAST_UPDATED_URL)).data;
-const lastUpdatedText = lastUpdated.split("-").reverse().join(".");
+
+let footer = ref(null); //$('footer').outerHeight();
+onMounted(() => {
+  let didScroll;
+  let lastScrollTop = 0;
+  let delta = 5;
+  let footerHeight = footer.value.offsetHeight
+  window.addEventListener("scroll", function (event) {
+    didScroll = true;
+  });
+
+  setInterval(function () {
+    if (didScroll) {
+      hasScrolled();
+      didScroll = false;
+    }
+  }, 250);
+
+  function hasScrolled() {
+    let st = window.scrollY;
+    if (Math.abs(lastScrollTop - st) <= delta) return;
+
+    if (st > lastScrollTop && st > footerHeight) {
+      // Scroll Down
+      footer.value.classList.remove("footer-down")
+    } else {
+      // Scroll Up
+      if (st < document.body.scrollHeight) {
+        footer.value.classList.add("footer-down");
+      }
+    }
+
+    lastScrollTop = st;
+  }
+});
 </script>
 
 <template>
   <HeaderFull />
-  <div class="message">
-    {{ inf.run[0] }}
-    <br />
-    Обновлено: <b>{{ lastUpdatedText }}</b>
-  </div>
-
   <Search class="search-cont" />
-  <Table></Table>
   <div class="last-visited" v-if="lastName != ''">
     Последнее просмотренное:
-    <router-link :to="lastUrl" v-if="lastName">{{ lastName }}</router-link>
-    <router-link :to="lastUrl" v-else>Ссылка</router-link>
+    <a :href="lastUrl" v-if="lastName">{{ lastName }}</a>
+    <a :href="lastUrl" v-else>Ссылка</a>
   </div>
-  <div class="footer">
-    <font-awesome-icon class="footer__info-icon fa-2x" icon="circle-info" />
-    <div class="footer__info-text">
-      <span>Нашли баг? Возник вопрос? </span>
-      <a href="https://vk.com/redmaunn">Пишите мне</a>
-      <a class="linkToGit" href="https://github.com/RedMaun/npi-schedule">
-        Исходный код
-      </a>
+  <div class="footer footer-down" ref="footer">
+    <div class="footer__cont">
+      <font-awesome-icon class="footer__info-icon fa-2x" icon="circle-info" />
+      <div class="footer__info-text">
+        <span>Нашли баг? Возник вопрос? </span>
+        <a href="https://vk.com/redmaunn">Пишите мне</a>
+        <a class="linkToGit" href="https://github.com/RedMaun/npi-schedule">
+          Исходный код
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -63,11 +85,11 @@ const lastUpdatedText = lastUpdated.split("-").reverse().join(".");
   width: fit-content;
   margin: auto;
   margin-top: 2rem;
-  margin-bottom: 4rem;
+  margin-bottom: 90vh;
 }
 
 .search-cont {
-  margin-top: 3rem;
+  margin-top: 15rem;
 }
 .message {
   width: fit-content;
@@ -78,25 +100,25 @@ const lastUpdatedText = lastUpdated.split("-").reverse().join(".");
   border-radius: 1rem;
 }
 .footer {
-  padding: 1rem;
-  background-color: #44475a;
-  position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  border-radius: 1rem;
-  width: 22rem;
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #2b2f3a;
+  position: fixed;
+  bottom: 0rem;
+  transition: bottom 0.2s ease-in-out;
 }
-.footer__info-text {
-  display: inline-block;
-  position: relative;
-  left: 2.5rem;
+
+.footer-down
+{
+  bottom: -4rem;
 }
-.footer__info-icon {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 1rem;
+
+.footer__cont {
+  width: fit-content;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 .table-cont {
   width: 30rem;
@@ -114,14 +136,13 @@ const lastUpdatedText = lastUpdated.split("-").reverse().join(".");
   * {
     font-size: small;
   }
+}
+@media only screen and (max-width: 370px) {
+  * {
+    font-size: x-small;
+  }
   .footer__info-icon {
     font-size: 2rem !important;
-  }
-  .search {
-    max-width: 24rem;
-  }
-  .search-cont {
-    margin-top: 2rem;
   }
   .group {
     border-radius: 0 !important;
@@ -130,11 +151,6 @@ const lastUpdatedText = lastUpdated.split("-").reverse().join(".");
   }
   .message {
     width: 80%;
-  }
-}
-@media only screen and (max-width: 370px) {
-  * {
-    font-size: xx-small !important;
   }
 }
 </style>

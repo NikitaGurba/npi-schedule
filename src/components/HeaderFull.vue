@@ -43,6 +43,8 @@ ready.value = true;
   border-bottom: 0.1rem solid #6272a4;
 }
 .header__reviews {
+  display: flex;
+  align-items: center;
   background-color: #353744;
   padding: 1rem;
   height: 1rem;
@@ -113,13 +115,33 @@ ready.value = true;
   .header__title,
   .header__week,
   .header__reviews {
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
   }
 }
 @media only screen and (max-width: 370px) {
-  #two {
-    font-size: xx-small;
+  .header__title,
+  .header__week,
+  .header__reviews {
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+  }
+  * {
+    font-size: x-small;
+  }
+  .header__week
+  {
+    width: fit-content;
+  }
+  .header__logo
+  {
+    width: 3.5rem;
+    height: 2.5rem;
+  }
+  .header__logo img
+  {
+    width: 3.5rem;
+    height: 2.5rem;
   }
 }
 </style>
