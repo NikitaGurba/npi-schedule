@@ -8,7 +8,7 @@ const props = defineProps({
 const socket = io(
   process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL,
 );
-const { name, grade, text, lecturer } = props.data;
+const { name, grade, text, lecturer, _id } = props.data;
 const likes = ref(props.data.likes);
 const dislikes = ref(props.data.dislikes);
 const liked = ref(false);

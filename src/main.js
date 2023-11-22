@@ -27,6 +27,8 @@ import {
   faStar,
   faArrowLeft,
   faX,
+  faThumbsUp,
+  faThumbsDown
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./registerServiceWorker";
@@ -43,6 +45,8 @@ library.add([
   faStar,
   faArrowLeft,
   faX,
+  faThumbsUp,
+  faThumbsDown
 ]);
 const routes = [
   { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },

@@ -32,6 +32,7 @@ socket.on("connect", () => {
   socket.emit("getSpecificData", lecturer);
   socket.on("takeSpecificData", (comments) => {
     rawData = comments;
+    console.log(comments)
     rawData.map((item) => {
       delete item.lecturer;
     });
