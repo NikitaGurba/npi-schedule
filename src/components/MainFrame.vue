@@ -304,10 +304,10 @@ const prOrStFinals = props.type === "st-fin" || props.type === "pr-fin";
         @click="scrollToCurrentDay"
       ></button>
       <div class="main-frame">
-        <div v-if="areClassesExists">
+        <div v-if="areClassesExists" :key="currentWeek">
           <DayCard
-            v-for="day in week"
-            :key="currentWeek"
+            v-for="(day, index) in week"
+            :key="'day' + (1 + index) * currentWeek"
             :colors="colors"
             :timeNow="timeNow"
             :type="type"
