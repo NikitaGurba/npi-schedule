@@ -2,9 +2,12 @@
 import { ref } from "vue";
 import Grade from "@/components/Grade.vue";
 import { io } from "socket.io-client";
+import axios from "axios";
 const props = defineProps({
   data: Object,
+  visitorId: String
 });
+
 const socket = io(
   process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL,
 );
@@ -13,11 +16,9 @@ const likes = ref(props.data.likes);
 const dislikes = ref(props.data.dislikes);
 const liked = ref(false);
 const disliked = ref(false);
-  
-const checkRate = () => {
-  socket.emit("getIp");
-  socket.on("takeIp", (ip) => {
-    console.log(ip);
+let ip
+const checkRate = async () => {
+    ip = (await axios.get('https://api.ipify.org/?format=json')).data.ip;
     likes.value.map((item) => {
       if (item === ip) {
         liked.value = true;
@@ -28,19 +29,18 @@ const checkRate = () => {
         disliked.value = true;
       }
     });
-  });
 };
 checkRate();
 const date = new Date(props.data.date).toLocaleDateString("ru-RU");
   
 const like = () => {
-  socket.emit("like", _id);
+  socket.emit("like", _id, ip);
   socket.on("takeLikes", (likesList) => {
     likes.value = likesList;
     liked.value = !liked.value;
     socket.off();
     if (disliked.value) {
-      socket.emit("dislike", _id);
+      socket.emit("dislike", _id, ip);
       socket.on("takeDislikes", (dislikeList) => {
         dislikes.value = dislikeList;
         disliked.value = !disliked.value;
@@ -50,13 +50,13 @@ const like = () => {
   });
 };
 const dislike = () => {
-  socket.emit("dislike", _id);
+  socket.emit("dislike", _id, ip);
   socket.on("takeDislikes", (dislikeList) => {
     dislikes.value = dislikeList;
     disliked.value = !disliked.value;
     socket.off();
     if (liked.value) {
-      socket.emit("like", _id);
+      socket.emit("like", _id, ip);
       socket.on("takeLikes", (likesList) => {
         likes.value = likesList;
         liked.value = !liked.value;
