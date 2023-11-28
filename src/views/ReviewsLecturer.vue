@@ -2,7 +2,8 @@
 import { ref, onMounted, onBeforeMount } from "vue";
 import Review from "@/components/Review.vue";
 import Grade from "@/components/Grade.vue";
-import { useRoute, useRouter } from "vue-router";
+import Spinner from "@/components/SpinnerElement.vue";
+import { useRoute } from "vue-router";
 import { io } from "socket.io-client";
 import { LECTURERS_URL } from "@/constants";
 import axios from "axios";
@@ -19,7 +20,9 @@ onBeforeMount(async () => {
 });
 
 let rawData;
-const socket = io(process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL);
+const socket = io(
+  process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL,
+);
 const route = useRoute();
 const maxInputLength = 250;
 const lecturer = route.params.lecturer;
@@ -28,11 +31,12 @@ const grade = ref(null);
 const gradeNumber = ref(0);
 const formText = ref("");
 const submitButton = ref(null);
+let dataExists;
 socket.on("connect", () => {
   socket.emit("getSpecificData", lecturer);
   socket.on("takeSpecificData", (comments) => {
+    dataExists = comments.length !== 0;
     rawData = comments;
-    console.log(comments)
     rawData.map((item) => {
       delete item.lecturer;
     });
@@ -40,10 +44,10 @@ socket.on("connect", () => {
   });
   socket.on("dataWriteSuccess", () => {
     socket.emit("getSpecificData", lecturer);
-  })
+  });
   socket.on("dataWriteFail", (error) => {
-    alert(error)
-  })
+    alert(error);
+  });
 });
 
 const paintStars = (array, index) => {
@@ -71,15 +75,22 @@ onMounted(() => {
   });
   submitButton.value.onclick = (e) => {
     e.preventDefault();
-    if (formText.value !== '' && gradeNumber.value !== 0)
-    {
+    if (formText.value !== "" && gradeNumber.value !== 0) {
       socket.emit("takeData", formText.value, gradeNumber.value, lecturer);
     }
-    gradeNumber.value = 0
-    formText.value = ''
+    gradeNumber.value = 0;
+    formText.value = "";
   };
 });
-const dataExists = data.value !== null && data.value.length === 0;
+const loadedSpinner = ref(!dataExists);
+const countOfLoaded = ref(0);
+
+const checkForLoad = () => {
+  countOfLoaded.value++;
+  if (countOfLoaded.value === data.value.length) {
+    loadedSpinner.value = true;
+  }
+};
 </script>
 <template>
   <div class="frame">
@@ -104,7 +115,9 @@ const dataExists = data.value !== null && data.value.length === 0;
             class="input-cont__text-input"
             :maxlength="maxInputLength"
           ></textarea>
-          <div class="input-cont__text-count">{{ formText.length + "/" + maxInputLength }}</div>
+          <div class="input-cont__text-count">
+            {{ formText.length + "/" + maxInputLength }}
+          </div>
         </div>
         <button ref="submitButton" class="form__submit-button">
           Отправить
@@ -112,11 +125,14 @@ const dataExists = data.value !== null && data.value.length === 0;
       </form>
     </div>
     <div class="reviews-cont">
-      <div v-if="dataExists" class="no-reviews">
-        Отзывов пока нет
-      </div>
-      <Review v-for="review in data" :data="review" />
-    </div>  
+      <div v-if="!dataExists" class="no-reviews">Отзывов пока нет</div>
+      <Review
+        v-for="review in data"
+        :data="review"
+        @loadedEvent="checkForLoad"
+      />
+      <Spinner v-if="!loadedSpinner"></Spinner>
+    </div>
   </div>
 </template>
 
@@ -215,11 +231,10 @@ const dataExists = data.value !== null && data.value.length === 0;
   margin-bottom: 10rem;
 }
 @media only screen and (max-width: 560px) {
-  .title__header
-  {
+  .title__header {
     font-size: 1.4rem;
   }
-  .frame{
+  .frame {
     width: 90%;
   }
 }

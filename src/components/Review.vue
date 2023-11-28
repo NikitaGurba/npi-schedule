@@ -5,8 +5,10 @@ import { io } from "socket.io-client";
 import axios from "axios";
 const props = defineProps({
   data: Object,
-  visitorId: String
+  visitorId: String,
 });
+
+const emit = defineEmits(['loadedEvent'])
 
 const socket = io(
   process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL,
@@ -16,59 +18,59 @@ const likes = ref(props.data.likes);
 const dislikes = ref(props.data.dislikes);
 const liked = ref(false);
 const disliked = ref(false);
-let ip
+const loaded = ref(false)
+let ip;
 const checkRate = async () => {
-    ip = (await axios.get('https://api.ipify.org/?format=json')).data.ip;
-    likes.value.map((item) => {
-      if (item === ip) {
-        liked.value = true;
-      }
-    });
-    dislikes.value.map((item) => {
-      if (item === ip) {
-        disliked.value = true;
-      }
-    });
+  ip = (await axios.get("https://api.ipify.org/?format=json")).data.ip;
+  liked.value = false;
+  likes.value.map((item) => {
+    if (item === ip) {
+      liked.value = true;
+    }
+  });
+  disliked.value = false;
+  dislikes.value.map((item) => {
+    if (item === ip) {
+      disliked.value = true;
+    }
+  });
+  loaded.value = true;
+  emit('loadedEvent')
 };
 checkRate();
 const date = new Date(props.data.date).toLocaleDateString("ru-RU");
-  
 const like = () => {
-  socket.emit("like", _id, ip);
-  socket.on("takeLikes", (likesList) => {
-    likes.value = likesList;
+  if (liked.value) {
     liked.value = !liked.value;
-    socket.off();
+    likes.value.splice(likes.value.length - 1, 1);
+  } else {
+    liked.value = !liked.value;
+    likes.value.push(ip);
     if (disliked.value) {
-      socket.emit("dislike", _id, ip);
-      socket.on("takeDislikes", (dislikeList) => {
-        dislikes.value = dislikeList;
-        disliked.value = !disliked.value;
-        socket.off();
-      });
+      disliked.value = !disliked.value;
+      dislikes.value.splice(likes.value.length - 1, 1);
     }
-  });
+  }
+  socket.emit("like", _id, ip);
 };
 const dislike = () => {
-  socket.emit("dislike", _id, ip);
-  socket.on("takeDislikes", (dislikeList) => {
-    dislikes.value = dislikeList;
+  if (disliked.value) {
     disliked.value = !disliked.value;
-    socket.off();
+    dislikes.value.splice(likes.value.length - 1, 1);
+  } else {
+    disliked.value = !disliked.value;
+    dislikes.value.push(ip);
     if (liked.value) {
-      socket.emit("like", _id, ip);
-      socket.on("takeLikes", (likesList) => {
-        likes.value = likesList;
-        liked.value = !liked.value;
-        socket.off();
-      });
+      liked.value = !liked.value;
+      likes.value.splice(likes.value.length - 1, 1);
     }
-  });
+  }
+  socket.emit("dislike", _id, ip);
 };
 </script>
 
 <template>
-  <article class="review">
+  <article class="review" v-if="loaded" :loaded="loaded">
     <header class="head">
       <router-link
         v-if="lecturer"
@@ -114,6 +116,7 @@ const dislike = () => {
       </div>
     </main>
   </article>
+  <article class="review review__not-loaded" v-else :loaded="loaded"></article>
 </template>
 
 <style scoped>
@@ -122,10 +125,22 @@ const dislike = () => {
   border-radius: 0.5rem;
   padding: 1rem;
 }
+.content__text
+{
+  white-space: normal;
+  word-break: break-word;
+  word-wrap: break-word;
+}
 .content {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+}
+.review__not-loaded
+{
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0rem;
 }
 .rate__button {
   padding: 0.5rem;

@@ -2,24 +2,36 @@
 import { ref, computed } from "vue";
 import Review from "@/components/Review.vue";
 import { io } from "socket.io-client";
-import Popup from "@/components/addReviewPopup.vue"
+import Popup from "@/components/addReviewPopup.vue";
+import Spinner from "@/components/SpinnerElement.vue";
 
 const data = ref(null);
 const socket = io(
   process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL,
 );
+let dataExists = false;
+const loaded = ref(false)
 socket.on("connect", () => {
   socket.emit("getData");
   socket.on("takeData", (comments) => {
     data.value = comments;
+    dataExists = data.value !== null;
+    loaded.value = !dataExists;
   });
 });
-const dataExists = data.value !== null && data.value.length === 0;
 
-const popupActive = ref(false)
-const popupView = computed(() => popupActive.value ? Popup : '')
-const popupToggle = () => popupActive.value = !popupActive.value
+const popupActive = ref(false);
+const popupView = computed(() => (popupActive.value ? Popup : ""));
+const popupToggle = () => (popupActive.value = !popupActive.value);
+const countOfLoaded = ref(0);
 
+const checkForLoad = () => {
+  countOfLoaded.value++
+  if (countOfLoaded.value === data.value.length)
+  {
+    loaded.value = true
+  }
+};
 </script>
 
 <template>
@@ -35,14 +47,18 @@ const popupToggle = () => popupActive.value = !popupActive.value
       </a>
       <header class="page-title__header">Недавние отзывы</header>
       <div class="page-title__cont">
-        <button class="page-title__button page-title__add-review" @click="popupToggle">
-          <font-awesome-icon icon="plus" class="page-title__icon fa-lg"/>
+        <button
+          class="page-title__button page-title__add-review"
+          @click="popupToggle"
+        >
+          <font-awesome-icon icon="plus" class="page-title__icon fa-lg" />
         </button>
       </div>
     </div>
-    <div class="reviews-cont">
-      <div v-if="dataExists" class="no-reviews">Отзывов пока нет</div>
-      <Review v-for="review in data" :data="review" />
+    <div class="reviews-cont" ref="reviews">
+      <div v-if="!dataExists" class="no-reviews">Отзывов пока нет</div>
+      <Review v-for="review in data" :data="review" @loadedEvent="checkForLoad"/>
+      <Spinner v-if="!loaded"></Spinner>
     </div>
   </div>
 </template>
@@ -50,11 +66,15 @@ const popupToggle = () => popupActive.value = !popupActive.value
 <style>
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity .2s
+  transition: opacity 0.2s;
+}
+.spin
+{
+  margin-top: 3rem;
 }
 .fade-enter,
 .fade-leave-to {
-    opacity: 0
+  opacity: 0;
 }
 .frame {
   width: 40rem;
@@ -65,13 +85,11 @@ const popupToggle = () => popupActive.value = !popupActive.value
 .no-reviews {
   color: #c7c7c7;
 }
-.page-title__add-review
-{
+.page-title__add-review {
   position: absolute;
   right: 0;
 }
-.page-title__cont
-{
+.page-title__cont {
   position: relative;
   width: 100%;
   height: 2.5rem;
