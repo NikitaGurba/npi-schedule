@@ -18,17 +18,12 @@ function classMerge(data) {
   let maxI = data.length;
   let newData = [];
   for (let i = 0; i < maxI; i++) {
+    let tempClass = Object.assign({}, data[i]);
+    delete tempClass.day;
+    delete tempClass.week;
     if (i === 0 || data[i].day != data[i - 1].day) {
-      let tempClass = Object.assign({}, data[i]);
-      delete tempClass.day;
-      delete tempClass.week;
-
       newData.push({ day: data[i].day - 1, classes: [tempClass] });
     } else if (data[i].day === data[i - 1].day) {
-      let tempClass = Object.assign({}, data[i]);
-      delete tempClass.day;
-      delete tempClass.week;
-
       newData[newData.length - 1].classes.push(tempClass);
     }
   }

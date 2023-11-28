@@ -73,43 +73,31 @@ function getClass(timesJson, start) {
   }
 }
 
+function dataFormat(data, i, timesJson, sort) {
+  return {
+    firstRow: data[i].discipline,
+    secondRow: [data[i][sort]],
+    thirdRow: [data[i].auditorium],
+    type: data[i].type,
+    class: data[i].class || getClass(timesJson, data[i].start),
+  };
+}
+
 exports.func = (data, sort, timesJson) => {
   let weeks = [];
   for (let i = 0; i < data.length; i++) {
     if (i === 0) {
       weeks.push({
         date: data[i].date,
-        classes: [
-          {
-            firstRow: data[i].discipline,
-            secondRow: [data[i][sort]],
-            thirdRow: [data[i].auditorium],
-            type: data[i].type,
-            class: data[i].class || getClass(timesJson, data[i].start),
-          },
-        ],
+        classes: [dataFormat(data, i, timesJson, sort)],
       });
     } else {
       if (data[i - 1].date === data[i].date) {
-        weeks[weeks.length - 1].classes.push({
-          firstRow: data[i].discipline,
-          secondRow: [data[i][sort]],
-          thirdRow: [data[i].auditorium],
-          type: data[i].type,
-          class: data[i].class || getClass(timesJson, data[i].start),
-        });
+        weeks[weeks.length - 1].classes.push(dataFormat(data, i, timesJson, sort));
       } else {
         weeks.push({
           date: data[i].date,
-          classes: [
-            {
-              firstRow: data[i].discipline,
-              secondRow: [data[i][sort]],
-              thirdRow: [data[i].auditorium],
-              type: data[i].type,
-              class: data[i].class || getClass(timesJson, data[i].start),
-            },
-          ],
+          classes: [dataFormat(data, i, timesJson, sort)],
         });
       }
     }
