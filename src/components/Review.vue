@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 const props = defineProps({
   data: Object,
   visitorId: String,
-  ip: String
+  ip: String,
 });
 
 const socket = io(
@@ -31,7 +31,15 @@ const checkRate = () => {
   });
 };
 checkRate();
-const date = new Date(props.data.date).toLocaleDateString("ru-RU");
+let hours = new Date(props.data.date).getHours();
+hours = hours < 10 ? "0" + hours : hours;
+
+let minutes = new Date(props.data.date).getMinutes();
+minutes = minutes < 10 ? "0" + minutes : minutes;
+
+const date =
+  hours + ":" + minutes + " " + new Date(props.data.date).toLocaleDateString("ru-RU");
+
 const like = () => {
   if (liked.value) {
     liked.value = !liked.value;
@@ -117,8 +125,7 @@ const dislike = () => {
   border-radius: 0.5rem;
   padding: 1rem;
 }
-.content__text
-{
+.content__text {
   white-space: normal;
   word-break: break-word;
   word-wrap: break-word;
@@ -128,8 +135,7 @@ const dislike = () => {
   flex-direction: column;
   gap: 0.3rem;
 }
-.review__not-loaded
-{
+.review__not-loaded {
   background-color: transparent;
   border-radius: 0;
   padding: 0rem;
