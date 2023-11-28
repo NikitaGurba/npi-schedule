@@ -2,7 +2,6 @@
 import { ref, onMounted, onBeforeMount } from "vue";
 import Review from "@/components/Review.vue";
 import Grade from "@/components/Grade.vue";
-import Spinner from "@/components/SpinnerElement.vue";
 import { useRoute } from "vue-router";
 import { io } from "socket.io-client";
 import { LECTURERS_URL } from "@/constants";
@@ -23,6 +22,7 @@ let rawData;
 const socket = io(
   process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL,
 );
+const ip = ref(null);
 const route = useRoute();
 const maxInputLength = 250;
 const lecturer = route.params.lecturer;
@@ -31,11 +31,12 @@ const grade = ref(null);
 const gradeNumber = ref(0);
 const formText = ref("");
 const submitButton = ref(null);
-let dataExists;
+const dataExists = ref(true);
 socket.on("connect", () => {
   socket.emit("getSpecificData", lecturer);
-  socket.on("takeSpecificData", (comments) => {
-    dataExists = comments.length !== 0;
+  socket.on("takeSpecificData", async (comments) => {
+    ip.value = (await axios.get("https://api.ipify.org/?format=json")).data.ip;
+    dataExists.value = comments.length !== 0;
     rawData = comments;
     rawData.map((item) => {
       delete item.lecturer;
@@ -82,15 +83,7 @@ onMounted(() => {
     formText.value = "";
   };
 });
-const loadedSpinner = ref(!dataExists);
-const countOfLoaded = ref(0);
 
-const checkForLoad = () => {
-  countOfLoaded.value++;
-  if (countOfLoaded.value === data.value.length) {
-    loadedSpinner.value = true;
-  }
-};
 </script>
 <template>
   <div class="frame">
@@ -129,9 +122,8 @@ const checkForLoad = () => {
       <Review
         v-for="review in data"
         :data="review"
-        @loadedEvent="checkForLoad"
+        :ip="ip"
       />
-      <Spinner v-if="!loadedSpinner"></Spinner>
     </div>
   </div>
 </template>

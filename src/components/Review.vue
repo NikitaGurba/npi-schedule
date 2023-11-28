@@ -2,13 +2,11 @@
 import { ref } from "vue";
 import Grade from "@/components/Grade.vue";
 import { io } from "socket.io-client";
-import axios from "axios";
 const props = defineProps({
   data: Object,
   visitorId: String,
+  ip: String
 });
-
-const emit = defineEmits(['loadedEvent'])
 
 const socket = io(
   process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL,
@@ -18,24 +16,19 @@ const likes = ref(props.data.likes);
 const dislikes = ref(props.data.dislikes);
 const liked = ref(false);
 const disliked = ref(false);
-const loaded = ref(false)
-let ip;
-const checkRate = async () => {
-  ip = (await axios.get("https://api.ipify.org/?format=json")).data.ip;
+const checkRate = () => {
   liked.value = false;
   likes.value.map((item) => {
-    if (item === ip) {
+    if (item === props.ip) {
       liked.value = true;
     }
   });
   disliked.value = false;
   dislikes.value.map((item) => {
-    if (item === ip) {
+    if (item === props.ip) {
       disliked.value = true;
     }
   });
-  loaded.value = true;
-  emit('loadedEvent')
 };
 checkRate();
 const date = new Date(props.data.date).toLocaleDateString("ru-RU");
@@ -45,13 +38,13 @@ const like = () => {
     likes.value.splice(likes.value.length - 1, 1);
   } else {
     liked.value = !liked.value;
-    likes.value.push(ip);
+    likes.value.push(props.ip);
     if (disliked.value) {
       disliked.value = !disliked.value;
       dislikes.value.splice(likes.value.length - 1, 1);
     }
   }
-  socket.emit("like", _id, ip);
+  socket.emit("like", _id, props.ip);
 };
 const dislike = () => {
   if (disliked.value) {
@@ -59,18 +52,18 @@ const dislike = () => {
     dislikes.value.splice(likes.value.length - 1, 1);
   } else {
     disliked.value = !disliked.value;
-    dislikes.value.push(ip);
+    dislikes.value.push(props.ip);
     if (liked.value) {
       liked.value = !liked.value;
       likes.value.splice(likes.value.length - 1, 1);
     }
   }
-  socket.emit("dislike", _id, ip);
+  socket.emit("dislike", _id, props.ip);
 };
 </script>
 
 <template>
-  <article class="review" v-if="loaded" :loaded="loaded">
+  <article class="review">
     <header class="head">
       <router-link
         v-if="lecturer"
@@ -116,7 +109,6 @@ const dislike = () => {
       </div>
     </main>
   </article>
-  <article class="review review__not-loaded" v-else :loaded="loaded"></article>
 </template>
 
 <style scoped>

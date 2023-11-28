@@ -1,37 +1,29 @@
 <script setup>
 import { ref, computed } from "vue";
 import Review from "@/components/Review.vue";
+import axios from "axios";
 import { io } from "socket.io-client";
 import Popup from "@/components/addReviewPopup.vue";
-import Spinner from "@/components/SpinnerElement.vue";
 
 const data = ref(null);
 const socket = io(
   process.env.VUE_APP_SOCKET_URL || import.meta.env.VITE_SOCKET_URL,
 );
-let dataExists = false;
-const loaded = ref(false)
+const dataExists = ref(true);
+const ip = ref(0);
 socket.on("connect", () => {
   socket.emit("getData");
-  socket.on("takeData", (comments) => {
+  socket.on("takeData", async (comments) => {
+    ip.value = (await axios.get("https://api.ipify.org/?format=json")).data.ip;
     data.value = comments;
-    dataExists = data.value !== null;
-    loaded.value = !dataExists;
+    dataExists.value = data.value !== null;
   });
 });
 
 const popupActive = ref(false);
 const popupView = computed(() => (popupActive.value ? Popup : ""));
 const popupToggle = () => (popupActive.value = !popupActive.value);
-const countOfLoaded = ref(0);
 
-const checkForLoad = () => {
-  countOfLoaded.value++
-  if (countOfLoaded.value === data.value.length)
-  {
-    loaded.value = true
-  }
-};
 </script>
 
 <template>
@@ -57,8 +49,11 @@ const checkForLoad = () => {
     </div>
     <div class="reviews-cont" ref="reviews">
       <div v-if="!dataExists" class="no-reviews">Отзывов пока нет</div>
-      <Review v-for="review in data" :data="review" @loadedEvent="checkForLoad"/>
-      <Spinner v-if="!loaded"></Spinner>
+      <Review
+        v-for="review in data"
+        :ip="ip"
+        :data="review"
+      />
     </div>
   </div>
 </template>
@@ -68,8 +63,7 @@ const checkForLoad = () => {
 .fade-leave-active {
   transition: opacity 0.2s;
 }
-.spin
-{
+.spin {
   margin-top: 3rem;
 }
 .fade-enter,
