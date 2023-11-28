@@ -128,7 +128,7 @@ const boxTextItemClass = (i, thirdRow) => {
               {{ item }}
             </a>
             <a
-              v-else-if="pageType !== 'au'"
+              v-else-if="pageType === 'pr'"
               :href="hrefForAuditorium(item)"
             >
               {{ item }}
