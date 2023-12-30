@@ -235,7 +235,7 @@ const prOrStFinals = props.type === "st-fin" || props.type === "pr-fin";
       </div>
       <div class="header__groupName">
         {{ groupName }}
-        <span v-if="isFinals">Сессия</span>
+        <span v-if="prOrStFinals">Сессия</span>
       </div>
       <div class="header__row">
         <button

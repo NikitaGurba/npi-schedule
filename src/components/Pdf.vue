@@ -144,18 +144,18 @@ function deleteSpace(arr) {
 }
 
 for (let i = 0; i < 2; i++) {
-  if (props.weeks[0] && props.weeks[0].length != 0) {
-    for (let z = 0; z < weeks[0].length; z++) {
-      for (let x = 0; x < weeks[0][z].classes.length; x++) {
-        pdfWeeks[i][weeks[0][z].classes[x].class - 1][weeks[0][z].day + 1] = {
+  if (props.weeks[i] && props.weeks[i].length != 0) {
+    for (let z = 0; z < weeks[i].length; z++) {
+      for (let x = 0; x < weeks[i][z].classes.length; x++) {
+        pdfWeeks[i][weeks[i][z].classes[x].class - 1][weeks[i][z].day + 1] = {
           text:
-            weeks[0][z].classes[x].firstRow +
+            weeks[i][z].classes[x].firstRow +
             " " +
-            weeks[0][z].classes[x].type +
+            weeks[i][z].classes[x].type +
             "\n" +
-            String(weeks[0][z].classes[x].secondRow) +
+            String(weeks[i][z].classes[x].secondRow) +
             " " +
-            weeks[0][z].classes[x].thirdRow,
+            weeks[i][z].classes[x].thirdRow,
         };
         //  fillColor: props.colors[weeks[0][z].classes[x].type].color}
       }

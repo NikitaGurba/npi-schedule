@@ -38,8 +38,7 @@ function hrefForAuditorium(name) {
 
 const { type, firstRow, secondRow, thirdRow } = props.data;
 const classNum = props.data.class;
-let todaysDayOfWeek = new Date().getDay();
-todaysDayOfWeek = todaysDayOfWeek === 0 ? 7 : todaysDayOfWeek;
+const todaysDayOfWeek = new Date().getDay() === 0 ? 7 : new Date().getDay();
 const isCurrent = computed(() => {
   return (
     currentClass.isCurrent(props.times, classNum - 1, props.timeNow) &&
